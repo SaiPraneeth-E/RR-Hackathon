@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+
+# Large local raw data files (replaced by lightweight compressed parquet)
+6af458274c1e8_data_pack/Data Pack/ball_by_ball.csv
+src/enriched_bbb.pkl
+
+# System & Temp files
+.DS_Store
+Thumbs.db
+desktop.ini
+~$*
+*.tmp
