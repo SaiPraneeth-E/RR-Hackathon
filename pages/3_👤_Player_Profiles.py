@@ -341,44 +341,57 @@ with tab_scout:
     scout1, scout2 = st.columns(2)
     
     with scout1:
-        st.markdown("""
-        <div style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid #10B981; border-radius: 8px; padding: 18px; margin-bottom: 16px;">
-            <div style="font-size: 12px; font-weight: 800; color: #10B981; text-transform: uppercase;">✅ Key Pressure Superpowers</div>
-            <div style="font-size: 13.5px; color: #E2E8F0; margin-top: 8px; line-height: 1.6;">
-                • <strong>Clutch Elevation:</strong> Delivers superior execution under pressure compared to ordinary overs.<br>
-                • <strong>Boundary Threat:</strong> Capable of finding the boundary early in the over, immediately resetting field pressure.<br>
-                • <strong>High Win Probability Surplus:</strong> Involved in critical match-winning sequences across IPL and T20Is.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        s1_html = (
+            '<div style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid #10B981; border-radius: 8px; padding: 18px; margin-bottom: 16px;">'
+            '<div style="font-size: 12px; font-weight: 800; color: #10B981; text-transform: uppercase;">✅ Key Pressure Superpowers</div>'
+            '<div style="font-size: 13.5px; color: #E2E8F0; margin-top: 8px; line-height: 1.6;">'
+            '• <strong>Clutch Elevation:</strong> Delivers superior execution under pressure compared to ordinary overs.<br>'
+            '• <strong>Boundary Threat:</strong> Capable of finding the boundary early in the over, immediately resetting field pressure.<br>'
+            '• <strong>High Win Probability Surplus:</strong> Involved in critical match-winning sequences across IPL and T20Is.'
+            '</div></div>'
+        )
+        if hasattr(st, "html"):
+            st.html(s1_html)
+        else:
+            st.markdown(s1_html, unsafe_allow_html=True)
         
-        st.markdown(f"""
-        <div style="background: rgba(233, 30, 99, 0.08); border-left: 4px solid #E91E63; border-radius: 8px; padding: 18px;">
-            <div style="font-size: 12px; font-weight: 800; color: #FF80AB; text-transform: uppercase;">⚠️ Opposition Exploitation Notes</div>
-            <div style="font-size: 13.5px; color: #E2E8F0; margin-top: 8px; line-height: 1.6;">
-                Opposing analysts will target early deliveries before set. For batters, testing with hard-length deliveries outside off-stump; for bowlers, attacking with aggressive switch-hits against stock lengths.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        s2_html = (
+            '<div style="background: rgba(233, 30, 99, 0.08); border-left: 4px solid #E91E63; border-radius: 8px; padding: 18px;">'
+            '<div style="font-size: 12px; font-weight: 800; color: #FF80AB; text-transform: uppercase;">⚠️ Opposition Exploitation Notes</div>'
+            '<div style="font-size: 13.5px; color: #E2E8F0; margin-top: 8px; line-height: 1.6;">'
+            'Opposing analysts will target early deliveries before set. For batters, testing with hard-length deliveries outside off-stump; for bowlers, attacking with aggressive switch-hits against stock lengths.'
+            '</div></div>'
+        )
+        if hasattr(st, "html"):
+            st.html(s2_html)
+        else:
+            st.markdown(s2_html, unsafe_allow_html=True)
 
     with scout2:
-        st.markdown(f"""
-        <div style="background: rgba(56, 189, 248, 0.08); border-left: 4px solid #38BDF8; border-radius: 8px; padding: 18px; margin-bottom: 16px;">
-            <div style="font-size: 12px; font-weight: 800; color: #38BDF8; text-transform: uppercase;">🏏 Tactical In-Game Deployment (For Sanju Samson & Rahul Dravid)</div>
-            <div style="font-size: 13.5px; color: #E2E8F0; margin-top: 8px; line-height: 1.6;">
-                • <strong>Optimal Match Phase:</strong> {'Death overs (16–20)' if (b_data is not None and b_data['delta_sr'] > 10) or (bw_data is not None and bw_data['death_share'] > 40) else 'Middle squeeze overs (7–15)'}<br>
-                • <strong>Target Scenario:</strong> High-leverage chases requiring 9.5+ RPO or defending sub-15 run margins in the final 2 overs.<br>
-                • <strong>Impact Player Substitution Priority:</strong> High — ideal for tactical matchup entry.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        phase_text = 'Death overs (16–20)' if (b_data is not None and b_data['delta_sr'] > 10) or (bw_data is not None and bw_data['death_share'] > 40) else 'Middle squeeze overs (7–15)'
+        s3_html = (
+            f'<div style="background: rgba(56, 189, 248, 0.08); border-left: 4px solid #38BDF8; border-radius: 8px; padding: 18px; margin-bottom: 16px;">'
+            f'<div style="font-size: 12px; font-weight: 800; color: #38BDF8; text-transform: uppercase;">🏏 Tactical In-Game Deployment (For Sanju Samson & Rahul Dravid)</div>'
+            f'<div style="font-size: 13.5px; color: #E2E8F0; margin-top: 8px; line-height: 1.6;">'
+            f'• <strong>Optimal Match Phase:</strong> {phase_text}<br>'
+            f'• <strong>Target Scenario:</strong> High-leverage chases requiring 9.5+ RPO or defending sub-15 run margins in the final 2 overs.<br>'
+            f'• <strong>Impact Player Substitution Priority:</strong> High — ideal for tactical matchup entry.'
+            f'</div></div>'
+        )
+        if hasattr(st, "html"):
+            st.html(s3_html)
+        else:
+            st.markdown(s3_html, unsafe_allow_html=True)
 
-        st.markdown(f"""
-        <div style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid #F59E0B; border-radius: 8px; padding: 18px;">
-            <div style="font-size: 12px; font-weight: 800; color: #FCD34D; text-transform: uppercase;">💰 Auction & Retention Valuation</div>
-            <div style="font-size: 13.5px; color: #E2E8F0; margin-top: 8px; line-height: 1.6;">
-                <strong>PRI Rating: {pri_val:.1f} / 100</strong> (Rank #{rank_val})<br>
-                Classified as a <strong>Tier 1 High-Leverage Asset</strong>. Generates substantial surplus value above base auction price due to clutch acceleration.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        s4_html = (
+            f'<div style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid #F59E0B; border-radius: 8px; padding: 18px;">'
+            f'<div style="font-size: 12px; font-weight: 800; color: #FCD34D; text-transform: uppercase;">💰 Auction & Retention Valuation</div>'
+            f'<div style="font-size: 13.5px; color: #E2E8F0; margin-top: 8px; line-height: 1.6;">'
+            f'<strong>PRI Rating: {pri_val:.1f} / 100</strong> (Rank #{rank_val})<br>'
+            f'Classified as a <strong>Tier 1 High-Leverage Asset</strong>. Generates substantial surplus value above base auction price due to clutch acceleration.'
+            f'</div></div>'
+        )
+        if hasattr(st, "html"):
+            st.html(s4_html)
+        else:
+            st.markdown(s4_html, unsafe_allow_html=True)
