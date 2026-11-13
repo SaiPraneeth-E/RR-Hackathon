@@ -1,5 +1,19 @@
 import streamlit as st
 
+THEME = {
+    'bg_card': '#1E293B',
+    'bg_dark': '#0B132B',
+    'pink': '#E91E63',
+    'cyan': '#38BDF8',
+    'emerald': '#10B981',
+    'gold': '#F59E0B',
+    'red': '#EF4444',
+    'purple': '#8B5CF6',
+    'text': '#F8FAFC',
+    'text_muted': '#94A3B8',
+    'grid': 'rgba(255, 255, 255, 0.08)'
+}
+
 def apply_custom_theme():
     """Injects high-end sports analytics dark theme CSS into Streamlit."""
     custom_css = """
@@ -27,11 +41,171 @@ def apply_custom_theme():
             --card-radius: 14px;
         }
 
-        /* App Base Styling */
+        /* App Base Styling with Cricket Stadium Ambience */
         .stApp {
-            background-color: var(--bg-main) !important;
+            background: radial-gradient(circle at 15% 15%, rgba(233, 30, 99, 0.09) 0%, transparent 45%), 
+                        radial-gradient(circle at 85% 85%, rgba(56, 189, 248, 0.09) 0%, transparent 45%),
+                        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 60%),
+                        #0B132B !important;
             font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
             color: var(--text-primary) !important;
+        }
+
+        /* Cricket Stadium Crease Border Lines */
+        .cricket-crease-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 20%, rgba(233, 30, 99, 0.6) 50%, rgba(56, 189, 248, 0.6) 80%, transparent 100%);
+            margin: 20px 0;
+        }
+
+        /* Player Spotlight Card (Luxury Cricket Trading Card) */
+        .player-spotlight-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6), 0 0 25px rgba(233, 30, 99, 0.15);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .player-spotlight-card.rank-gold {
+            border: 1px solid rgba(245, 158, 11, 0.45);
+            box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(245, 158, 11, 0.2);
+        }
+
+        .player-spotlight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #E91E63 0%, #38BDF8 50%, #F59E0B 100%);
+        }
+
+        /* Player Avatar Circle with Glowing Ring */
+        .player-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: #FFFFFF;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+        }
+
+        .player-avatar.gold {
+            background: linear-gradient(135deg, #F59E0B, #B45309);
+            border-color: #FCD34D;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+            color: #000;
+        }
+
+        .player-avatar.pink {
+            background: linear-gradient(135deg, #E91E63, #880E4F);
+            border-color: #FF80AB;
+            box-shadow: 0 0 20px rgba(233, 30, 99, 0.5);
+        }
+
+        .player-avatar.cyan {
+            background: linear-gradient(135deg, #0284C7, #0C4A6E);
+            border-color: #7DD3FC;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+        }
+
+        /* Archetype Pill */
+        .archetype-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 4px;
+        }
+
+        .archetype-badge.finisher {
+            background: rgba(233, 30, 99, 0.18);
+            border: 1px solid #E91E63;
+            color: #FF80AB;
+        }
+
+        .archetype-badge.death-bowler {
+            background: rgba(56, 189, 248, 0.18);
+            border: 1px solid #38BDF8;
+            color: #7DD3FC;
+        }
+
+        .archetype-badge.spin-maestro {
+            background: rgba(139, 92, 246, 0.18);
+            border: 1px solid #8B5CF6;
+            color: #C4B5FD;
+        }
+
+        .archetype-badge.anchor {
+            background: rgba(16, 185, 129, 0.18);
+            border: 1px solid #10B981;
+            color: #6EE7B7;
+        }
+
+        /* Stat Ribbon Tiles */
+        .stat-ribbon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .stat-ribbon-tile {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 12px 14px;
+            text-align: center;
+            transition: 0.2s ease;
+        }
+
+        .stat-ribbon-tile:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateY(-2px);
+            background: rgba(30, 41, 59, 0.8);
+        }
+
+        .stat-ribbon-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .stat-ribbon-val {
+            font-size: 18px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin-top: 4px;
+        }
+
+        .stat-ribbon-val.positive {
+            color: #10B981;
+        }
+        .stat-ribbon-val.gold {
+            color: #F59E0B;
+        }
+        .stat-ribbon-val.cyan {
+            color: #38BDF8;
         }
 
         /* Sidebar Styling */
@@ -404,4 +578,81 @@ def render_callout(text, title="ANALYST NOTE"):
     </div>
     """
     st.markdown(html, unsafe_allow_html=True)
+
+
+def render_player_spotlight_card(name, player_id, rank, pri, role, archetype, teams, stats_dict, notes=None):
+    """Renders a high-end luxury cricket trading card for highlighted players."""
+    is_gold = (rank == 1)
+    card_class = "player-spotlight-card rank-gold" if is_gold else "player-spotlight-card"
+    avatar_class = "player-avatar gold" if is_gold else ("player-avatar pink" if role == "Batter" else "player-avatar cyan")
+    medal_emoji = "🥇" if rank == 1 else ("🥈" if rank == 2 else ("🥉" if rank == 3 else f"#{rank}"))
+
+    # Determine archetype badge style
+    arch_lower = archetype.lower()
+    if "finisher" in arch_lower or "closer" in arch_lower or "accelerat" in arch_lower:
+        badge_style = "archetype-badge finisher"
+    elif "death" in arch_lower or "pacer" in arch_lower:
+        badge_style = "archetype-badge death-bowler"
+    elif "spin" in arch_lower or "mystery" in arch_lower:
+        badge_style = "archetype-badge spin-maestro"
+    else:
+        badge_style = "archetype-badge anchor"
+
+    # Build stat tiles HTML
+    tiles_html = ""
+    for label, val in stats_dict.items():
+        val_str = str(val)
+        val_class = "stat-ribbon-val"
+        if "+" in val_str or (any(c.isdigit() for c in val_str) and "%" in val_str and float(val_str.replace("%","")) > 60):
+            val_class += " positive"
+        elif is_gold:
+            val_class += " gold"
+        else:
+            val_class += " cyan"
+        tiles_html += f"""
+        <div class="stat-ribbon-tile">
+            <div class="stat-ribbon-label">{label}</div>
+            <div class="{val_class}">{val}</div>
+        </div>
+        """
+
+    card_html = f"""
+    <div class="{card_class}">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 18px;">
+                <div class="{avatar_class}">
+                    {name[0]}
+                </div>
+                <div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 22px; font-weight: 800; color: #FFFFFF;">{name}</span>
+                        <span style="font-size: 16px;">{medal_emoji}</span>
+                    </div>
+                    <div style="font-size: 12px; color: #94A3B8; margin-top: 2px;">
+                        Player ID: <code style="color: #38BDF8; background: rgba(56,189,248,0.1); padding: 2px 6px; border-radius: 4px;">{player_id}</code> • 
+                        <span style="color: #CBD5E1;">{teams}</span>
+                    </div>
+                    <div class="{badge_style}">{archetype}</div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <div style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 10px; padding: 10px 18px; text-align: center;">
+                    <div style="font-size: 10px; color: #FCD34D; font-weight: 800; text-transform: uppercase;">PRI Score</div>
+                    <div style="font-size: 22px; font-weight: 800; color: #FFF;">{pri:.1f}</div>
+                </div>
+                <div style="background: rgba(233, 30, 99, 0.12); border: 1px solid rgba(233, 30, 99, 0.4); border-radius: 10px; padding: 10px 18px; text-align: center;">
+                    <div style="font-size: 10px; color: #FF80AB; font-weight: 800; text-transform: uppercase;">Official Rank</div>
+                    <div style="font-size: 22px; font-weight: 800; color: #FFF;">#{rank}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-ribbon-grid">
+            {tiles_html}
+        </div>
+
+        {f'<div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 12.5px; color: #CBD5E1; line-height: 1.5;"><strong>⚡ Tactical Intelligence:</strong> {notes}</div>' if notes else ''}
+    </div>
+    """
+    st.markdown(card_html, unsafe_allow_html=True)
 

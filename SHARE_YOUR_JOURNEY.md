@@ -65,3 +65,4 @@ If you wish to upload photographs or screenshots alongside your submission, the 
 2. **`figures/fig2_bowling_containment.png`**: The Phase-Adjusted Economy Savings chart illustrating the Formula 1 paradox.
 3. **`figures/fig6_over_pressure_curve.png`**: The 20-over match leverage curve showing pressure escalation.
 4. **`figures/fig7_rise_vs_dip.png`**: The 4-quadrant scatter plot separating elite accelerators from regressors.
+

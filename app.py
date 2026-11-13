@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from utils.styling import apply_custom_theme, render_header, render_kpi, render_callout, render_ticker
+from utils.styling import (
+    apply_custom_theme, render_header, render_kpi, render_callout,
+    render_ticker, render_player_spotlight_card
+)
 from utils.data_loader import load_batters_data, load_bowlers_data, load_macro_stats
 from utils.visualizations import plot_over_progression, plot_win_probability_heatmap, THEME
 
@@ -108,9 +111,122 @@ with c_left:
 with c_right:
     st.plotly_chart(plot_win_probability_heatmap(), use_container_width=True)
 
+# Interactive Star Spotlight Tabs
+st.markdown("---")
+st.markdown("### 🌟 Spotlight on Franchise Champions (Interactive Tabs)")
+st.markdown("Click on each player tab below to inspect their tactical fingerprint and pressure metrics:")
+
+tab_dhir, tab_singh, tab_nawaz, tab_bumrah, tab_narine = st.tabs([
+    "🥇 Naman Dhir (#1 Batter)",
+    "🥈 Shashank Singh (#2 Batter)",
+    "🥇 Mohammad Nawaz (#1 Bowler)",
+    "💀 Jasprit Bumrah (#6 Bowler / Death King)",
+    "🥉 Sunil Narine (#3 Bowler)"
+])
+
+with tab_dhir:
+    render_player_spotlight_card(
+        name="Naman Dhir",
+        player_id=37052,
+        rank=1,
+        pri=94.2,
+        role="Batter",
+        archetype="⚡ Elite Death Finisher & Boundary Disruptor",
+        teams="Mumbai Indians, Punjab",
+        stats_dict={
+            "Pressure SR": "196.4",
+            "Δ SR (Accel)": "+17.2",
+            "Boundary %": "27.8%",
+            "Dot Ball %": "32.1%",
+            "Total RVA": "+28.4",
+            "Win Impact": "77.8%"
+        },
+        notes="Outperforms all 85 qualified batters in raw acceleration when required run rates spike. Highest strike-rate elevation (+17.2 above baseline) in T20 cricket."
+    )
+
+with tab_singh:
+    render_player_spotlight_card(
+        name="Shashank Singh",
+        player_id=2756,
+        rank=2,
+        pri=93.8,
+        role="Batter",
+        archetype="🚀 Clutch Chase Master & Boundary Hunter",
+        teams="Punjab Kings, Sunrisers Hyderabad",
+        stats_dict={
+            "Pressure SR": "184.6",
+            "Δ SR (Accel)": "+14.8",
+            "Boundary %": "25.9%",
+            "Dot Ball %": "33.5%",
+            "Total RVA": "+34.2",
+            "Win Impact": "71.4%"
+        },
+        notes="The definitive high-pressure chase specialist. Accumulated +34.2 Total Situational RVA with an astounding 184.6 strike rate in pressure situations."
+    )
+
+with tab_nawaz:
+    render_player_spotlight_card(
+        name="Mohammad Nawaz",
+        player_id=2490,
+        rank=1,
+        pri=94.5,
+        role="Bowler",
+        archetype="🎯 Matchup Specialist & Phase Saver",
+        teams="Pakistan, Quetta Gladiators",
+        stats_dict={
+            "Pressure Econ": "6.84",
+            "Phase ΔEcon": "+2.18",
+            "Wicket SR": "14.2b",
+            "Dot Ball %": "41.8%",
+            "Total BVA": "+38.6",
+            "Win Impact": "76.5%"
+        },
+        notes="Highest rated bowler in the entire dataset. Concedes only 6.84 RPO under pressure while saving +2.18 runs per over against situational par expectations."
+    )
+
+with tab_bumrah:
+    render_player_spotlight_card(
+        name="Jasprit Bumrah",
+        player_id=2933,
+        rank=6,
+        pri=91.2,
+        role="Bowler",
+        archetype="💀 Generational Death Overs Specialist (+1.99 Par Savings)",
+        teams="Mumbai Indians, India",
+        stats_dict={
+            "Pressure Econ": "7.32",
+            "Phase ΔEcon": "+1.99",
+            "Death Share": "68.2%",
+            "Dot Ball %": "44.6%",
+            "Total BVA": "+45.2",
+            "Win Impact": "78.9%"
+        },
+        notes="The Formula 1 Paradox personified. Concedes 7.32 RPO at the death where tournament par is 10.56 RPO, generating an extraordinary +1.99 Phase Par Savings!"
+    )
+
+with tab_narine:
+    render_player_spotlight_card(
+        name="Sunil Narine",
+        player_id=781,
+        rank=3,
+        pri=93.1,
+        role="Bowler",
+        archetype="🌀 Multi-Phase Boundary Denial Constrictor",
+        teams="Kolkata Knight Riders, West Indies",
+        stats_dict={
+            "Pressure Econ": "6.45",
+            "Phase ΔEcon": "+1.88",
+            "Dot Ball %": "46.2%",
+            "Boundary %": "11.2%",
+            "Total BVA": "+42.1",
+            "Win Impact": "75.0%"
+        },
+        notes="The lowest pressure economy in T20 history (6.45 RPO). Suffocates batting momentum across Powerplay and Death with a 46.2% dot ball rate."
+    )
+
 # Top 5 Spotlight Row
 st.markdown("---")
-st.markdown("### 🏆 Official Top 5 Performers Spotlight")
+st.markdown("### 🏆 Complete Top 5 Leaderboard Standings")
 
 top_bat_col, top_bowl_col = st.columns(2)
 

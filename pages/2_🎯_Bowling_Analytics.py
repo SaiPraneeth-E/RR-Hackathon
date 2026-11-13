@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from utils.styling import apply_custom_theme, render_header, render_kpi, render_callout
+from utils.styling import (
+    apply_custom_theme, render_header, render_kpi, render_callout,
+    render_player_spotlight_card, THEME
+)
 from utils.data_loader import load_bowlers_data
 from utils.visualizations import plot_scatter, plot_horizontal_bar, THEME
 
@@ -75,105 +78,160 @@ render_callout(
     title="WHY PHASE-ADJUSTED ECONOMY MATTERS"
 )
 
-# Leaderboard Table
-st.markdown("### 📋 Interactive Bowling Leaderboard")
-
-display_cols = [
-    'rank', 'bowler_name', 'bowler_id', 'balls_p', 'wickets_p',
-    'econ_p', 'econ_all', 'phase_delta_econ', 'death_share', 'dot_pct_p',
-    'win_impact_pct', 'total_bva_p', 'PRI'
-]
-table_df = filtered[display_cols].copy()
-table_df.columns = [
-    'Rank', 'Bowler', 'ID', 'Balls (P)', 'Wickets (P)',
-    'Pressure Econ', 'Base Econ', 'Phase ΔEcon', 'Death Share %', 'Dot %',
-    'Win Impact %', 'Total BVA', 'PRI Score'
-]
-
-st.dataframe(
-    table_df.style.format({
-        'Pressure Econ': '{:.2f}',
-        'Base Econ': '{:.2f}',
-        'Phase ΔEcon': '{:+.2f}',
-        'Death Share %': '{:.1f}%',
-        'Dot %': '{:.1f}%',
-        'Win Impact %': '{:.1f}%',
-        'Total BVA': '{:+.1f}',
-        'PRI Score': '{:.1f}'
-    }).background_gradient(subset=['PRI Score'], cmap='YlGn')
-      .background_gradient(subset=['Phase ΔEcon'], cmap='coolwarm', vmin=-2.0, vmax=2.5),
-    use_container_width=True,
-    height=420,
-    hide_index=True
-)
-
-# Download CSV Button
-csv_data = table_df.to_csv(index=False).encode('utf-8')
-st.download_button(
-    label="📥 Download Bowling Leaderboard (CSV)",
-    data=csv_data,
-    file_name="superr_selector_bowling_leaderboard.csv",
-    mime="text/csv"
-)
-
-# Visualizations Section
+# Master Module Tabs
 st.markdown("---")
-st.markdown("### 📈 Analytical Visualizations")
-
-chart_tab1, chart_tab2, chart_tab3 = st.tabs([
-    "🛡️ Phase-Adjusted Economy Savings vs Par",
-    "💀 Death Overs (16–20) Specialist Matrix",
-    "📊 Cumulative Bowling Value Added (BVA)"
+view_tab1, view_tab2, view_tab3 = st.tabs([
+    "🌟 1. Elite Top 10 Showcase",
+    "📋 2. Interactive Leaderboard Grid",
+    "📈 3. Tactical Visualizations & Quadrants"
 ])
 
-with chart_tab1:
-    st.markdown("#### Phase-Adjusted Economy Savings: Who Beats Contextual Par?")
-    median_econ = float(filtered['econ_p'].median())
-    fig_phase = plot_scatter(
-        df=filtered,
-        x_col='econ_p',
-        y_col='phase_delta_econ',
-        text_col='bowler_name',
-        color_col='PRI',
-        size_col='balls_p',
-        title="Pressure Economy vs Phase Savings (Top Left is Optimal: Low Econ, Massive Par Savings)",
-        x_label="Pressure Economy Rate (Lower is Better)",
-        y_label="Phase-Adjusted Economy Savings (Phase ΔEcon: Higher is Better)",
-        vline=median_econ,
-        hline=0.0
+# ----- TAB 1: TOP 10 SHOWCASE -----
+with view_tab1:
+    st.markdown("#### 🌟 Official Top 10 Bowlers Spotlight")
+    st.markdown("Select a bowler below to inspect their tactical fingerprint and pressure containment metrics:")
+    
+    top10_bw_names = bowl_df.head(10)['bowler_name'].tolist()
+    top10_bw_choice = st.radio(
+        "Choose Bowler to Highlight:",
+        options=top10_bw_names,
+        horizontal=True
     )
-    st.plotly_chart(fig_phase, use_container_width=True)
+    
+    bw_sel = bowl_df[bowl_df['bowler_name'] == top10_bw_choice].iloc[0]
+    
+    bowl_tactics = {
+        "Mohammad Nawaz": "Rank #1. Exceptional containment across high-leverage overs, conceding just 6.84 RPO and saving +2.18 runs/over vs situational par.",
+        "Abrar Ahmed": "Rank #2. Mystery spin strangler. Induces a high dot-ball rate (42.5%) during critical chase overs with severe spin variations.",
+        "Sunil Narine": "Rank #3. World-class multi-phase boundary denial. Unmatched 6.45 pressure economy across 100+ high-pressure deliveries.",
+        "Akeal Hosein": "Rank #4. Highly disciplined left-arm orthodox. Excellent flatter trajectory preventing batters from accessing down-ground boundaries.",
+        "Mitchell Santner": "Rank #5. Elite tactical controller. Extremely difficult to hit to the leg side when defending tight run margins.",
+        "Jasprit Bumrah": "Rank #6. The Generational Death Specialist. Concedes only 7.32 RPO at the death where league par is 10.56 RPO (+1.99 Par Savings, 68.2% death share).",
+        "Mujeeb Ur Rahman": "Rank #7. Early-overs and middle-overs constrictor. High accuracy with carrom ball variations under pressure.",
+        "Rashid Khan": "Rank #8. Clutch wicket taker and enforcer. Blends a stingy 7.24 economy with +39.8 Total BVA in pressure situations.",
+        "Shaheen Afridi": "Rank #9. Premier left-arm pacer. Attacks high-stakes powerplay and death overs with swinging yorkers (58.7% death share).",
+        "Shadab Khan": "Rank #10. Aggressive middle-overs wicket taker. Forces attacking errors when the opposition required run rate climbs."
+    }
+    
+    render_player_spotlight_card(
+        name=bw_sel['bowler_name'],
+        player_id=int(bw_sel['bowler_id']),
+        rank=int(bw_sel['rank']),
+        pri=float(bw_sel['PRI']),
+        role="Bowler",
+        archetype="🎯 Official Top 10 Pressure Bowler",
+        teams="IPL & National Team",
+        stats_dict={
+            "Pressure Econ": f"{bw_sel['econ_p']:.2f}",
+            "Base Econ": f"{bw_sel['econ_all']:.2f}",
+            "Phase ΔEcon": f"{bw_sel['phase_delta_econ']:+.2f}",
+            "Wicket SR": f"{bw_sel['sr_p']:.1f}b",
+            "Dot Ball %": f"{bw_sel['dot_pct_p']:.1f}%",
+            "Death Share": f"{bw_sel['death_share']:.1f}%",
+            "Total BVA": f"{bw_sel['total_bva_p']:+.1f}",
+            "Win Impact": f"{bw_sel['win_impact_pct']:.1f}%"
+        },
+        notes=bowl_tactics.get(bw_sel['bowler_name'], "Exceptional phase-adjusted containment under pressure.")
+    )
 
-with chart_tab2:
-    st.markdown("#### Death Overs Specialization: Bowling When Stakes Peak")
-    death_filtered = filtered[filtered['death_balls'] >= 30].copy()
-    death_filtered['death_econ'] = (death_filtered['runs_p'] / (death_filtered['balls_p'] / 6)).round(2)
-    fig_death = plot_scatter(
-        df=death_filtered,
-        x_col='death_share',
-        y_col='phase_delta_econ',
-        text_col='bowler_name',
-        color_col='PRI',
-        size_col='death_balls',
-        title="Death Overs Workload Share vs Phase Savings (Min 30 Death Balls)",
-        x_label="Death Overs Share of Pressure Deliveries (%)",
-        y_label="Phase-Adjusted Economy Savings (RPO)",
-        vline=float(death_filtered['death_share'].median()),
-        hline=0.0
-    )
-    st.plotly_chart(fig_death, use_container_width=True)
+# ----- TAB 2: INTERACTIVE LEADERBOARD GRID -----
+with view_tab2:
+    st.markdown("#### 📋 Comprehensive Bowling Leaderboard (98 Qualified Players)")
+    display_cols = [
+        'rank', 'bowler_name', 'bowler_id', 'balls_p', 'wickets_p',
+        'econ_p', 'econ_all', 'phase_delta_econ', 'death_share', 'dot_pct_p',
+        'win_impact_pct', 'total_bva_p', 'PRI'
+    ]
+    table_df = filtered[display_cols].copy()
+    table_df.columns = [
+        'Rank', 'Bowler', 'ID', 'Balls (P)', 'Wickets (P)',
+        'Pressure Econ', 'Base Econ', 'Phase ΔEcon', 'Death Share %', 'Dot %',
+        'Win Impact %', 'Total BVA', 'PRI Score'
+    ]
 
-with chart_tab3:
-    st.markdown("#### Cumulative Match Value: Top 15 Bowlers by Total Bowling Value Added (BVA)")
-    top15_bva = bowl_df.sort_values(by='total_bva_p', ascending=False).head(15)
-    fig_bva_bar = plot_horizontal_bar(
-        df=top15_bva,
-        x_col='total_bva_p',
-        y_col='bowler_name',
-        title="Top 15 Bowlers by Total Situational BVA Added",
-        x_label="Total BVA (Runs Saved & Wickets Gained Above Contextual Par)",
-        color_col='PRI',
-        height=480
+    st.dataframe(
+        table_df.style.format({
+            'Pressure Econ': '{:.2f}',
+            'Base Econ': '{:.2f}',
+            'Phase ΔEcon': '{:+.2f}',
+            'Death Share %': '{:.1f}%',
+            'Dot %': '{:.1f}%',
+            'Win Impact %': '{:.1f}%',
+            'Total BVA': '{:+.1f}',
+            'PRI Score': '{:.1f}'
+        }).background_gradient(subset=['PRI Score'], cmap='YlGn')
+          .background_gradient(subset=['Phase ΔEcon'], cmap='coolwarm', vmin=-2.0, vmax=2.5),
+        use_container_width=True,
+        height=420,
+        hide_index=True
     )
-    st.plotly_chart(fig_bva_bar, use_container_width=True)
+
+    # Download CSV Button
+    csv_data = table_df.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="📥 Download Bowling Leaderboard (CSV)",
+        data=csv_data,
+        file_name="superr_selector_bowling_leaderboard.csv",
+        mime="text/csv"
+    )
+
+# ----- TAB 3: TACTICAL VISUALIZATIONS -----
+with view_tab3:
+    st.markdown("#### 📈 Tactical Visualizations & Quadrant Analytics")
+    chart_tab1, chart_tab2, chart_tab3 = st.tabs([
+        "🛡️ Phase-Adjusted Economy Savings vs Par",
+        "💀 Death Overs (16–20) Specialist Matrix",
+        "📊 Cumulative Bowling Value Added (BVA)"
+    ])
+
+    with chart_tab1:
+        st.markdown("#### Phase-Adjusted Economy Savings: Who Beats Contextual Par?")
+        median_econ = float(filtered['econ_p'].median())
+        fig_phase = plot_scatter(
+            df=filtered,
+            x_col='econ_p',
+            y_col='phase_delta_econ',
+            text_col='bowler_name',
+            color_col='PRI',
+            size_col='balls_p',
+            title="Pressure Economy vs Phase Savings (Top Left is Optimal: Low Econ, Massive Par Savings)",
+            x_label="Pressure Economy Rate (Lower is Better)",
+            y_label="Phase-Adjusted Economy Savings (Phase ΔEcon: Higher is Better)",
+            vline=median_econ,
+            hline=0.0
+        )
+        st.plotly_chart(fig_phase, use_container_width=True)
+
+    with chart_tab2:
+        st.markdown("#### Death Overs Specialization: Bowling When Stakes Peak")
+        death_filtered = filtered[filtered['death_balls'] >= 30].copy()
+        death_filtered['death_econ'] = (death_filtered['runs_p'] / (death_filtered['balls_p'] / 6)).round(2)
+        fig_death = plot_scatter(
+            df=death_filtered,
+            x_col='death_share',
+            y_col='phase_delta_econ',
+            text_col='bowler_name',
+            color_col='PRI',
+            size_col='death_balls',
+            title="Death Overs Workload Share vs Phase Savings (Min 30 Death Balls)",
+            x_label="Death Overs Share of Pressure Deliveries (%)",
+            y_label="Phase-Adjusted Economy Savings (RPO)",
+            vline=float(death_filtered['death_share'].median()),
+            hline=0.0
+        )
+        st.plotly_chart(fig_death, use_container_width=True)
+
+    with chart_tab3:
+        st.markdown("#### Cumulative Match Value: Top 15 Bowlers by Total Bowling Value Added (BVA)")
+        top15_bva = bowl_df.sort_values(by='total_bva_p', ascending=False).head(15)
+        fig_bva_bar = plot_horizontal_bar(
+            df=top15_bva,
+            x_col='total_bva_p',
+            y_col='bowler_name',
+            title="Top 15 Bowlers by Total Situational BVA Added",
+            x_label="Total BVA (Runs Saved & Wickets Gained Above Contextual Par)",
+            color_col='PRI',
+            height=480
+        )
+        st.plotly_chart(fig_bva_bar, use_container_width=True)
 
