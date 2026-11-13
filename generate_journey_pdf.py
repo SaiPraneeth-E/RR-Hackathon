@@ -417,35 +417,30 @@ def build_journey_pdf():
     story.append(mtab)
     story.append(Spacer(1, 12))
 
-    # STEP 7: Video Script & Conclusion
-    story.append(Paragraph("Step 7: The 60-Second Video Pitch & Reflection", h1_style))
-    video_script = (
-        "<b>🎥 60-Second Video Script (Word-for-Word):</b><br/>"
-        "<i>[0:00–0:10]</i> 'When Rajasthan Royals launched SupeRR Selector, our team asked one question: "
-        "Can data separate players who thrive under tension from those who look great only when there is zero pressure?'<br/>"
-        "<i>[0:10–0:30]</i> 'We analyzed 200,000+ balls using a 4-pillar model. Our key breakthrough was the Formula 1 Paradox—"
-        "bowling over 19 is high-risk at 300 km/h where par is 10.6 RPO. By adjusting for phase par, Jasprit Bumrah saves 2 full runs "
-        "per over against death expectations.'<br/>"
-        "<i>[0:30–0:45]</i> 'It also revealed why uncapped finishers like Naman Dhir and Shashank Singh are the ultimate clutch batters—"
-        "hitting boundaries without burning dot balls.'<br/>"
-        "<i>[0:45–0:60]</i> 'We packaged this into an 11-module interactive platform. This isn\\'t just theory—it\\'s franchise Moneyball. "
-        "Thank you, Rajasthan Royals! Halla Bol!'"
+    # Concluding Summary & Strategic Value
+    story.append(Paragraph("Conclusion: From Analytical Intelligence to Championships", h1_style))
+    conclusion_text = (
+        "<b>Summary & Strategic Takeaways for the Rajasthan Royals:</b><br/>"
+        "• <b>Contextual Objectivity:</b> Evaluated 207,678 deliveries across 883 matches to ensure rankings reflect empirical clutch performance rather than reputation.<br/>"
+        "• <b>Phase-Par Fairness:</b> Solved the Formula 1 Paradox through Phase-Adjusted Economy Savings, ensuring high-stakes death bowlers are rewarded fairly.<br/>"
+        "• <b>Targeted Recruitment for IPL 2027:</b> Identified elite uncapped accelerators (Naman Dhir, Shashank Singh) and multi-phase controllers (Mohammad Nawaz, Sunil Narine) to construct an unbreakable championship core alongside Sanju Samson and Riyan Parag.<br/>"
+        "• <b>End-to-End Transparency:</b> Every metric, radar split, and match log is fully reproducible and explorable via our open-source Streamlit platform."
     )
-    vtab = Table([[Paragraph(video_script, body_style)]], colWidths=[7.5*inch])
-    vtab.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F1F5F9")),
-        ('LINELEFT', (0,0), (-1,-1), 4, rr_navy),
+    ctab = Table([[Paragraph(conclusion_text, body_style)]], colWidths=[7.5*inch])
+    ctab.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#F8FAFC")),
+        ('LINELEFT', (0,0), (-1,-1), 4, rr_pink),
         ('BOX', (0,0), (-1,-1), 0.5, border_subtle),
         ('PADDING', (0,0), (-1,-1), 8),
     ]))
-    story.append(vtab)
+    story.append(ctab)
     story.append(Spacer(1, 14))
 
-    # Sign-off box
+    # Clean Footer Reference
     signoff_text = (
-        "<b>Project Repository:</b> https://github.com/SaiPraneeth-E/RR-Hackathon<br/>"
-        "<b>Live Interactive Platform:</b> Available locally via <code>python -m streamlit run app.py</code> or 1-Click Streamlit Cloud Deploy.<br/>"
-        "<b>Author:</b> E Sai Praneeth • SupeRR Selector Season 2 Verified Submission"
+        "<b>Project Repository:</b> https://github.com/SaiPraneeth-E/RR-Hackathon &nbsp;&nbsp;•&nbsp;&nbsp; "
+        "<b>Author:</b> E Sai Praneeth &nbsp;&nbsp;•&nbsp;&nbsp; "
+        "<b>SupeRR Selector Season 2 Verified Submission</b>"
     )
     story.append(Paragraph(signoff_text, meta_style))
 
@@ -459,3 +454,4 @@ def build_journey_pdf():
 
 if __name__ == "__main__":
     build_journey_pdf()
+
