@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from utils.styling import apply_custom_theme, render_header, render_kpi, render_callout
+from utils.styling import apply_custom_theme, render_header, render_kpi, render_callout, render_ticker
 from utils.data_loader import load_batters_data, load_bowlers_data, load_macro_stats
 from utils.visualizations import plot_over_progression, plot_win_probability_heatmap, THEME
 
@@ -41,12 +41,13 @@ with st.sidebar:
     st.markdown("---")
     st.caption("SupeRR Selector 2.0 • Rajasthan Royals Analytics")
 
-# Render Master Header
+# Render Master Header & Live Ticker
 render_header(
     title="SUPERR SELECTOR",
     subtitle="The Science of Performing Under Pressure in T20 Cricket",
     tag="Season 2 Verified Solution"
 )
+render_ticker()
 
 # Load data
 bat_df = load_batters_data()
@@ -144,6 +145,55 @@ with top_bowl_col:
         use_container_width=True,
         hide_index=True
     )
+
+# Executive Discovery: 4 Franchise Defining Insights
+st.markdown("---")
+st.markdown("### 💡 Four Moneyball Insights for Rajasthan Royals Decision-Makers")
+disc1, disc2, disc3, disc4 = st.columns(4)
+
+with disc1:
+    st.markdown("""
+        <div class="rr-kpi-card" style="border-left: 3px solid #E91E63;">
+            <div style="font-size: 11px; font-weight: 700; color: #E91E63; text-transform: uppercase;">1. The Boundary Paradigm</div>
+            <div style="font-size: 14px; font-weight: 700; color: #fff; margin: 6px 0;">Finishers Beat Anchors</div>
+            <div style="font-size: 12px; color: #94A3B8; line-height: 1.5;">
+                <strong>Naman Dhir (+17.2 ΔSR)</strong> and <strong>Shashank Singh (+14.8 ΔSR)</strong> produce elite clutch impact because they achieve 26%+ boundary frequency without wasting dot balls.
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+with disc2:
+    st.markdown("""
+        <div class="rr-kpi-card" style="border-left: 3px solid #38BDF8;">
+            <div style="font-size: 11px; font-weight: 700; color: #38BDF8; text-transform: uppercase;">2. The F1 vs School Zone</div>
+            <div style="font-size: 14px; font-weight: 700; color: #fff; margin: 6px 0;">Phase Par Correction</div>
+            <div style="font-size: 12px; color: #94A3B8; line-height: 1.5;">
+                Raw economy is misleading. <strong>Jasprit Bumrah</strong> concedes 7.32 RPO at the death against a par of 10.56 RPO, saving <strong>+1.99 runs/over vs situational par</strong>.
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+with disc3:
+    st.markdown("""
+        <div class="rr-kpi-card" style="border-left: 3px solid #10B981;">
+            <div style="font-size: 11px; font-weight: 700; color: #10B981; text-transform: uppercase;">3. Boundary Denial Masters</div>
+            <div style="font-size: 14px; font-weight: 700; color: #fff; margin: 6px 0;">Mystery Spin Dominance</div>
+            <div style="font-size: 12px; color: #94A3B8; line-height: 1.5;">
+                <strong>Mohammad Nawaz (PRI 94.5)</strong> and <strong>Sunil Narine (PRI 93.1)</strong> strangle momentum by restricting boundary percentages to under 12% in critical overs.
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+with disc4:
+    st.markdown("""
+        <div class="rr-kpi-card" style="border-left: 3px solid #EF4444;">
+            <div style="font-size: 11px; font-weight: 700; color: #EF4444; text-transform: uppercase;">4. The Flat-Track Illusion</div>
+            <div style="font-size: 14px; font-weight: 700; color: #fff; margin: 6px 0;">Severe Pressure Dips</div>
+            <div style="font-size: 12px; color: #94A3B8; line-height: 1.5;">
+                The anti-rankings expose players whose output collapses under tension: <strong>Curtis Campher (-5.04 ΔSR)</strong> and <strong>Andre Russell (-2.29 Phase ΔEcon)</strong>.
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
 
 # Quick Nav Cards
 st.markdown("---")

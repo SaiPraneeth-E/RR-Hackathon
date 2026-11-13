@@ -267,9 +267,93 @@ def apply_custom_theme():
             font-weight: 600 !important;
             color: #F8FAFC !important;
         }
+
+        /* Live Sports Intelligence Ticker */
+        .rr-ticker-container {
+            background: linear-gradient(90deg, #131E31 0%, #1A2744 50%, #131E31 100%);
+            border-top: 1px solid rgba(233, 30, 99, 0.4);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            padding: 8px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .rr-ticker-badge {
+            background: #E91E63;
+            color: #FFFFFF;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            margin-right: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .rr-ticker-badge::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .rr-ticker-content {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #E2E8F0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .rr-ticker-highlight {
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+        .rr-ticker-gold {
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
     </style>
     """
     st.markdown(custom_css, unsafe_allow_html=True)
+
+
+def render_ticker(highlights=None):
+    """Renders a live sports broadcast intelligence ticker across the top."""
+    if highlights is None:
+        highlights = (
+            "🔥 <span class='rr-ticker-gold'>#1 Batter:</span> Naman Dhir (PRI 94.2 • 196.4 SR) • "
+            "🎯 <span class='rr-ticker-gold'>#1 Bowler:</span> Mohammad Nawaz (PRI 94.5 • 6.84 Econ) • "
+            "⚡ <span class='rr-ticker-highlight'>Death King:</span> Jasprit Bumrah (+1.99 Phase Par Savings) • "
+            "🚀 <span class='rr-ticker-highlight'>Top Accelerator:</span> Shashank Singh (+14.8 ΔSR) • "
+            "🛡️ <span class='rr-ticker-highlight'>Multi-Phase Constrictor:</span> Sunil Narine (6.45 Econ) • "
+            "📊 200,999 Deliveries Evaluated across 883 Matches"
+        )
+    html = f"""
+    <div class="rr-ticker-container">
+        <div class="rr-ticker-badge">LIVE INTEL</div>
+        <div class="rr-ticker-content">{highlights}</div>
+    </div>
+    """
+    st.markdown(html, unsafe_allow_html=True)
 
 
 def render_header(title="SUPERR SELECTOR", subtitle="The Science of Performing Under Pressure", tag="Round 1 Verified Solution"):
