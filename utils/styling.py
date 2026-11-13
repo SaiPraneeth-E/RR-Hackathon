@@ -14,6 +14,11 @@ THEME = {
     'grid': 'rgba(255, 255, 255, 0.08)'
 }
 
+__all__ = [
+    'apply_custom_theme', 'render_header', 'render_kpi', 'render_callout',
+    'render_ticker', 'render_player_spotlight_card', 'THEME'
+]
+
 def apply_custom_theme():
     """Injects high-end sports analytics dark theme CSS into Streamlit."""
     custom_css = """

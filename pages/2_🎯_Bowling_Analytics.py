@@ -6,7 +6,7 @@ from utils.styling import (
     render_player_spotlight_card, THEME
 )
 from utils.data_loader import load_bowlers_data
-from utils.visualizations import plot_scatter, plot_horizontal_bar, THEME
+from utils.visualizations import plot_scatter, plot_horizontal_bar
 
 st.set_page_config(page_title="Bowling Analytics | SUPERR SELECTOR", page_icon="🎯", layout="wide")
 apply_custom_theme()

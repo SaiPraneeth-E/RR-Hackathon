@@ -6,7 +6,7 @@ from utils.styling import (
     render_player_spotlight_card, THEME
 )
 from utils.data_loader import load_batters_data, load_player_mapping
-from utils.visualizations import plot_scatter, plot_horizontal_bar, THEME
+from utils.visualizations import plot_scatter, plot_horizontal_bar
 
 st.set_page_config(page_title="Batting Analytics | SUPERR SELECTOR", page_icon="🏏", layout="wide")
 apply_custom_theme()
