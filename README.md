@@ -12,10 +12,12 @@
 
 ## 🚀 Live Streamlit Web App Deployment
 
-This repository is ready for instant one-click deployment on **Streamlit Community Cloud**:
-1. Connect your GitHub repository: `https://github.com/SaiPraneeth-E/RR-Hackathon`
-2. Main file path: `app.py`
-3. Branch: `main`
+[![Deploy to Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deploy?repository=SaiPraneeth-E/RR-Hackathon&branch=main&mainModule=app.py)
+
+Click the badge above or follow these 3 steps to deploy in under 60 seconds on **Streamlit Community Cloud**:
+1. Open the [One-Click Deployment Link](https://share.streamlit.io/deploy?repository=SaiPraneeth-E/RR-Hackathon&branch=main&mainModule=app.py)
+2. Verify repository: `SaiPraneeth-E/RR-Hackathon`, Branch: `main`, Main file: `app.py`
+3. Click **"Deploy!"**
 
 ---
 
@@ -103,3 +105,4 @@ Download the official report whitepapers directly from the `reports/` folder:
 - **Author**: Edupulapati Sai Praneeth
 - **Event**: Rajasthan Royals SupeRR Selector Season 2 — Round 1 Challenge
 - **Data Source**: Official Rajasthan Royals / Unstop ball-by-ball IPL & T20I data pack (2022–2026)
+
