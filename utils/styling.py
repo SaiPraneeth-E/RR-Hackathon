@@ -512,7 +512,10 @@ def apply_custom_theme():
         }
     </style>
     """
-    st.markdown(custom_css, unsafe_allow_html=True)
+    if hasattr(st, "html"):
+        st.html(custom_css)
+    else:
+        st.markdown(custom_css, unsafe_allow_html=True)
 
 
 def render_ticker(highlights=None):
@@ -532,7 +535,10 @@ def render_ticker(highlights=None):
         <div class="rr-ticker-content">{highlights}</div>
     </div>
     """
-    st.markdown(html, unsafe_allow_html=True)
+    if hasattr(st, "html"):
+        st.html(html)
+    else:
+        st.markdown(html, unsafe_allow_html=True)
 
 
 def render_header(title="SUPERR SELECTOR", subtitle="The Science of Performing Under Pressure", tag="Round 1 Verified Solution"):
@@ -554,7 +560,10 @@ def render_header(title="SUPERR SELECTOR", subtitle="The Science of Performing U
         </div>
     </div>
     """
-    st.markdown(header_html, unsafe_allow_html=True)
+    if hasattr(st, "html"):
+        st.html(header_html)
+    else:
+        st.markdown(header_html, unsafe_allow_html=True)
 
 
 def render_kpi(col, title, value, sub="", sub_type="positive"):
@@ -572,7 +581,10 @@ def render_kpi(col, title, value, sub="", sub_type="positive"):
         {f'<div class="{sub_class}">{sub}</div>' if sub else ''}
     </div>
     """
-    col.markdown(html, unsafe_allow_html=True)
+    if hasattr(col, "html"):
+        col.html(html)
+    else:
+        col.markdown(html, unsafe_allow_html=True)
 
 
 def render_callout(text, title="ANALYST NOTE"):
@@ -582,11 +594,14 @@ def render_callout(text, title="ANALYST NOTE"):
         <strong>{title}:</strong> {text}
     </div>
     """
-    st.markdown(html, unsafe_allow_html=True)
+    if hasattr(st, "html"):
+        st.html(html)
+    else:
+        st.markdown(html, unsafe_allow_html=True)
 
 
 def render_player_spotlight_card(name, player_id, rank, pri, role, archetype, teams, stats_dict, notes=None):
-    """Renders a high-end luxury cricket trading card for highlighted players."""
+    """Renders a high-end luxury cricket trading card for highlighted players without markdown indentation issues."""
     is_gold = (rank == 1)
     card_class = "player-spotlight-card rank-gold" if is_gold else "player-spotlight-card"
     avatar_class = "player-avatar gold" if is_gold else ("player-avatar pink" if role == "Batter" else "player-avatar cyan")
@@ -603,8 +618,8 @@ def render_player_spotlight_card(name, player_id, rank, pri, role, archetype, te
     else:
         badge_style = "archetype-badge anchor"
 
-    # Build stat tiles HTML
-    tiles_html = ""
+    # Build stat tiles HTML without leading indentation
+    tiles_list = []
     for label, val in stats_dict.items():
         val_str = str(val)
         val_class = "stat-ribbon-val"
@@ -614,50 +629,51 @@ def render_player_spotlight_card(name, player_id, rank, pri, role, archetype, te
             val_class += " gold"
         else:
             val_class += " cyan"
-        tiles_html += f"""
-        <div class="stat-ribbon-tile">
-            <div class="stat-ribbon-label">{label}</div>
-            <div class="{val_class}">{val}</div>
-        </div>
-        """
+        tiles_list.append(
+            f'<div class="stat-ribbon-tile">'
+            f'<div class="stat-ribbon-label">{label}</div>'
+            f'<div class="{val_class}">{val}</div>'
+            f'</div>'
+        )
+    tiles_html = "".join(tiles_list)
 
-    card_html = f"""
-    <div class="{card_class}">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-            <div style="display: flex; align-items: center; gap: 18px;">
-                <div class="{avatar_class}">
-                    {name[0]}
-                </div>
-                <div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 22px; font-weight: 800; color: #FFFFFF;">{name}</span>
-                        <span style="font-size: 16px;">{medal_emoji}</span>
-                    </div>
-                    <div style="font-size: 12px; color: #94A3B8; margin-top: 2px;">
-                        Player ID: <code style="color: #38BDF8; background: rgba(56,189,248,0.1); padding: 2px 6px; border-radius: 4px;">{player_id}</code> • 
-                        <span style="color: #CBD5E1;">{teams}</span>
-                    </div>
-                    <div class="{badge_style}">{archetype}</div>
-                </div>
-            </div>
-            <div style="display: flex; gap: 12px;">
-                <div style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 10px; padding: 10px 18px; text-align: center;">
-                    <div style="font-size: 10px; color: #FCD34D; font-weight: 800; text-transform: uppercase;">PRI Score</div>
-                    <div style="font-size: 22px; font-weight: 800; color: #FFF;">{pri:.1f}</div>
-                </div>
-                <div style="background: rgba(233, 30, 99, 0.12); border: 1px solid rgba(233, 30, 99, 0.4); border-radius: 10px; padding: 10px 18px; text-align: center;">
-                    <div style="font-size: 10px; color: #FF80AB; font-weight: 800; text-transform: uppercase;">Official Rank</div>
-                    <div style="font-size: 22px; font-weight: 800; color: #FFF;">#{rank}</div>
-                </div>
-            </div>
-        </div>
+    notes_html = f'<div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);font-size:12.5px;color:#CBD5E1;line-height:1.5;"><strong>⚡ Tactical Intelligence:</strong> {notes}</div>' if notes else ''
 
-        <div class="stat-ribbon-grid">
-            {tiles_html}
-        </div>
-
-        {f'<div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 12.5px; color: #CBD5E1; line-height: 1.5;"><strong>⚡ Tactical Intelligence:</strong> {notes}</div>' if notes else ''}
-    </div>
-    """
-    st.markdown(card_html, unsafe_allow_html=True)
+    # Clean unindented card HTML
+    card_html = (
+        f'<div class="{card_class}">'
+        f'<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">'
+        f'<div style="display:flex;align-items:center;gap:18px;">'
+        f'<div class="{avatar_class}">{name[0]}</div>'
+        f'<div>'
+        f'<div style="display:flex;align-items:center;gap:10px;">'
+        f'<span style="font-size:22px;font-weight:800;color:#FFFFFF;">{name}</span>'
+        f'<span style="font-size:16px;">{medal_emoji}</span>'
+        f'</div>'
+        f'<div style="font-size:12px;color:#94A3B8;margin-top:2px;">'
+        f'Player ID: <code style="color:#38BDF8;background:rgba(56,189,248,0.1);padding:2px 6px;border-radius:4px;">{player_id}</code> • '
+        f'<span style="color:#CBD5E1;">{teams}</span>'
+        f'</div>'
+        f'<div class="{badge_style}">{archetype}</div>'
+        f'</div>'
+        f'</div>'
+        f'<div style="display:flex;gap:12px;">'
+        f'<div style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.4);border-radius:10px;padding:10px 18px;text-align:center;">'
+        f'<div style="font-size:10px;color:#FCD34D;font-weight:800;text-transform:uppercase;">PRI Score</div>'
+        f'<div style="font-size:22px;font-weight:800;color:#FFF;">{pri:.1f}</div>'
+        f'</div>'
+        f'<div style="background:rgba(233,30,99,0.12);border:1px solid rgba(233,30,99,0.4);border-radius:10px;padding:10px 18px;text-align:center;">'
+        f'<div style="font-size:10px;color:#FF80AB;font-weight:800;text-transform:uppercase;">Official Rank</div>'
+        f'<div style="font-size:22px;font-weight:800;color:#FFF;">#{rank}</div>'
+        f'</div>'
+        f'</div>'
+        f'</div>'
+        f'<div class="stat-ribbon-grid">{tiles_html}</div>'
+        f'{notes_html}'
+        f'</div>'
+    )
+    if hasattr(st, "html"):
+        st.html(card_html)
+    else:
+        st.markdown(card_html, unsafe_allow_html=True)
 
